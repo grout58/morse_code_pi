@@ -13,14 +13,41 @@ morse = {'a': '*-', 'b': '-***', 'c': '-*-*', 'd': '-**', 'e': '*', 'f': '**-*',
 
 def dash():
     GPIO.output(7, True)
-    time.sleep()
+    time.sleep(.5)
+    GPIO.output(7, False)
+    time.sleep(.5)
 
 
+def dot():
+    GPIO.output(7, True)
+    time.sleep(.25)
+    GPIO.output(7, False)
+    time.sleep(.25)
 
-def print_morse(string):
+
+def space():
+    GPIO.out(7, True)
+    time.sleep(1)
+    GPIO.out(7, False)
+    time.sleep(1)
+
+
+def message(string):
     my_message = ''
     for letter in string:
         my_message += morse[letter] + ' '
     return my_message
+
+
+def broadcast(message, dot, dash):
+    for letter in message:
+        if letter == '*':
+            dot()
+        elif letter == '-':
+            dash()
+        elif letter == ' ':
+            space()
+
+
 
 print(print_morse(input('> ')))
