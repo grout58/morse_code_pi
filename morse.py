@@ -1,6 +1,9 @@
 import time
-
-
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7, GPIO.OUT)
+GPIO.setup(18, GPIO.OUT)
+GPIO.setwarnings(False)
 
 morse = {'a': '*-', 'b': '-***', 'c': '-*-*', 'd': '-**', 'e': '*', 'f': '**-*',
         'g': '--*', 'h': '****', 'i': '**', 'j': '*---', 'k': '-*-', 'l': '*-**',
@@ -26,21 +29,17 @@ def dot():
 
 
 def space():
-    GPIO.out(7, True)
+    GPIO.output(7, True)
     time.sleep(1)
-    GPIO.out(7, False)
+    GPIO.output(7, False)
     time.sleep(1)
 
 
-def message(string):
+def broadcast(string):
     my_message = ''
     for letter in string:
         my_message += morse[letter] + ' '
-    return my_message
-
-
-def broadcast(message, dot, dash):
-    for letter in message:
+    for letter in my_message:
         if letter == '*':
             dot()
         elif letter == '-':
@@ -50,4 +49,7 @@ def broadcast(message, dot, dash):
 
 
 
-print(print_morse(input('> ')))
+broadcast(input('> '))
+
+
+GPIO.cleanup()
